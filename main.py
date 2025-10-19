@@ -34,6 +34,8 @@ class Main:
             self.screen.fill(self.__screen_fill)
 
             keys = pygame.key.get_pressed()
+            if keys[pygame.K_UP]:
+                ship.move(200 * self.dt)
             if keys[pygame.K_LEFT]:
                 ship.rotate(-200 * self.dt)
             if keys[pygame.K_RIGHT]:

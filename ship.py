@@ -43,6 +43,14 @@ class Ship:
             self.__corners[i].x = rotated_x + self.pos.x
             self.__corners[i].y = rotated_y + self.pos.y
 
+    def move(self, speed):
+        direction = self.pos - self.__corners[0]
+        direction = direction.normalize()
+        speed = -speed
+        for i, p in enumerate(self.__corners.copy()):
+            self.__corners[i].x += speed * direction.x
+            self.__corners[i].y += speed * direction.y
+
     def update(self, dt):
         pass
 
