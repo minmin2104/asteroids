@@ -1,3 +1,4 @@
+from ship import Ship
 import pygame
 
 
@@ -16,12 +17,20 @@ class Main:
         self.game_loop()
 
     def game_loop(self):
+
+        ship = Ship(
+            pygame.math.Vector2(self.screen.get_width() / 2,
+                                self.screen.get_height() / 2),
+            15,
+            pygame.Color(255, 255, 255))
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
 
             self.screen.fill('purple')
+
+            ship.render(self.screen)
 
             pygame.display.flip()
 
