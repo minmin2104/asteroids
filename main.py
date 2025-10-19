@@ -43,7 +43,7 @@ class Main:
             if keys[pygame.K_x]:
                 ship.shoot()
 
-                ship.update(self.dt)
+            ship.update(self.dt)
             ship.render(self.screen)
 
             pygame.display.flip()
