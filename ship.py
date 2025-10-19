@@ -12,12 +12,15 @@ class Ship:
             pygame.math.Vector2(self.pos.x, self.pos.y - self.__center_distance),
             # Left side
             pygame.math.Vector2(self.pos.x - self.__center_distance, self.pos.y + self.__center_distance),
+            # Extrude inward
+            self.pos,
             # Right side
             pygame.math.Vector2(self.pos.x + self.__center_distance, self.pos.y + self.__center_distance),            
         ]
         self.__base_corners = [
             pygame.math.Vector2(0, -self.__center_distance),
             pygame.math.Vector2(-self.__center_distance, self.__center_distance),
+            pygame.math.Vector2(0, 0),
             pygame.math.Vector2(self.__center_distance, self.__center_distance),
         ]
         self.color = color
