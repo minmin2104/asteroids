@@ -35,8 +35,6 @@ class Ship:
         self.__angle = 0
         self.__bullet_speed = -400
         self.__bullets = []
-        self.__bullet_lifetime = 3  # seconds
-        self.__bullet_time_acc = 0
 
     def rotate(self, rotation_speed):
         self.__angle += math.radians(rotation_speed)
@@ -71,13 +69,13 @@ class Ship:
         self.__bullets.append(bullet)
 
     def update(self, dt):
-        self.__bullet_time_acc += dt
         for bullet in self.__bullets:
             bullet_dir = bullet["direction"]
             bullet["rect"].x += (self.__bullet_speed *
                                  dt) * bullet_dir.x
             bullet["rect"].y += (self.__bullet_speed *
                                  dt) * bullet_dir.y
+
         self.__bullets[:] = [b for b in self.__bullets if not b["is_dead"]]
 
     def render(self, screen):
