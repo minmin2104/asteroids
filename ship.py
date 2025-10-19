@@ -51,6 +51,9 @@ class Ship:
             self.__corners[i].x += speed * direction.x
             self.__corners[i].y += speed * direction.y
 
+    def shoot(self):
+        pass
+
     def update(self, dt):
         pass
 
