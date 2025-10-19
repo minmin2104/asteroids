@@ -1,5 +1,4 @@
 from ship import Ship
-import math
 import pygame
 
 
