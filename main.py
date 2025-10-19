@@ -41,8 +41,9 @@ class Main:
             if keys[pygame.K_RIGHT]:
                 ship.rotate(200 * self.dt)
             if keys[pygame.K_x]:
-                pass
+                ship.shoot()
 
+                ship.update(self.dt)
             ship.render(self.screen)
 
             pygame.display.flip()
