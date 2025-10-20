@@ -1,3 +1,4 @@
+from asteroid import Asteroid
 from ship import Ship
 import pygame
 
@@ -26,6 +27,13 @@ class Game:
             15,
             pygame.Color(255, 255, 255))
 
+        asteroid = Asteroid(
+            pygame.math.Vector2(40, 40),
+            pygame.math.Vector2(0, 0),
+            12,
+            30
+        )
+
         last_shot_time = 0
         shooting_cooldown = 0.5  # Second
 
@@ -51,6 +59,8 @@ class Game:
 
             ship.update(self.dt)
             ship.render(self.screen)
+
+            asteroid.render(self.screen)
 
             pygame.display.flip()
 
