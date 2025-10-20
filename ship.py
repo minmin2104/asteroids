@@ -84,5 +84,8 @@ class Ship:
         for bullet in self.__bullets:
             bullet_rect = bullet["rect"]
             pygame.draw.rect(screen, 'white', bullet_rect)
-            if (bullet_rect.x >= screen.get_width() or bullet_rect.x + bullet_rect.width < 0) or (bullet_rect.y >= screen.get_height() or bullet_rect.y + bullet_rect.width < 0):
+            if (bullet_rect.x >= screen.get_width()
+                    or bullet_rect.x + bullet_rect.width < 0) \
+                    or (bullet_rect.y >= screen.get_height()
+                        or bullet_rect.y + bullet_rect.width < 0):
                 bullet["is_dead"] = True
