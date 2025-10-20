@@ -18,17 +18,20 @@ class Asteroid:
         ]
 
     def __create(self):
-        angle_inc = 360 / self.__vertex_count
-        angle = 0
-        for vert in self.__relative_vertices:
+        angle_inc = 360 // self.__vertex_count
+        angles = [a for a in range(
+            0, angle_inc * self.__vertex_count, angle_inc)]
+        angles = list(
+            map(lambda a: a + (random.uniform(-0.10, 0.10) * angle_inc),
+                angles))
+        angles.sort()
+        for i, vert in enumerate(self.__relative_vertices):
             radius_offset = random.uniform(-0.30, 0.30) * self.__base_radius
             radius = self.__base_radius + radius_offset
-            x = radius * math.cos(math.radians(angle))
-            y = radius * math.sin(math.radians(angle))
+            x = radius * math.cos(math.radians(angles[i]))
+            y = radius * math.sin(math.radians(angles[i]))
             vert.x = x
             vert.y = y
-            angle_offset = random.uniform(-0.10, 0.10) * angle_inc
-            angle += angle_inc + angle_offset
 
     def render(self, screen):
         pygame.draw.polygon(screen, 'white', self.__absolute_vertices, width=1)

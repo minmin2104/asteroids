@@ -30,7 +30,7 @@ class Game:
         asteroid = Asteroid(
             pygame.math.Vector2(40, 40),
             pygame.math.Vector2(0, 0),
-            12,
+            10,
             30
         )
 
