@@ -35,6 +35,7 @@ class Game:
         )
 
         last_shot_time = 0
+        game_time = 0
         shooting_cooldown = 0.5  # Second
 
         while self.running:
@@ -52,10 +53,10 @@ class Game:
             if keys[pygame.K_RIGHT]:
                 ship.rotate(200 * self.dt)
             if keys[pygame.K_x]:
-                if pygame.time.get_ticks() / 1000 - \
+                if game_time - \
                         last_shot_time >= shooting_cooldown:
                     ship.shoot()
-                    last_shot_time = pygame.time.get_ticks() / 1000
+                    last_shot_time = game_time
 
             ship.update(self.dt)
             ship.render(self.screen)
@@ -65,6 +66,7 @@ class Game:
             pygame.display.flip()
 
             self.dt = self.clock.tick(self.fps) / 1000
+            game_time += self.dt
 
         pygame.quit()
 
