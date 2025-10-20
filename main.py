@@ -21,8 +21,21 @@ class Game:
         self.main()
 
     def spawn_asteroid(self):
-        pos_x = random.choice([random.randint(-10, 0), random.randint(self.__win_width, self.__win_width + 10)])
-        pos_y = random.choice([random.randint(-10, 0), random.randint(self.__win_height, self.__win_height + 10)])
+        edge = random.choice(['top', 'bottom', 'left', 'right'])
+
+        if edge == 'top':
+            pos_x = random.randint(0, self.__win_width)
+            pos_y = -10
+        elif edge == 'bottom':
+            pos_x = random.randint(0, self.__win_width)
+            pos_y = 10
+        elif edge == 'left':
+            pos_y = random.randint(0, self.__win_height)
+            pos_x = -10
+        else:
+            pos_y = random.randint(0, self.__win_height)
+            pos_x = 10
+
         pos = pygame.math.Vector2(pos_x, pos_y)
         mid_screen = pygame.math.Vector2(self.__win_width / 2, self.__win_height / 2)
         vec_to_mid = pos - mid_screen
