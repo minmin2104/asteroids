@@ -50,6 +50,8 @@ class Main:
 
             self.dt = self.clock.tick(self.fps) / 1000
 
+        pygame.quit()
+
 
 if __name__ == '__main__':
     Main('Asteroid', 800, 600, 60, 'black')
