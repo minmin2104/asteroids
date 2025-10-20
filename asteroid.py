@@ -4,9 +4,10 @@ import pygame
 
 
 class Asteroid:
-    def __init__(self, pos, direction, vertex_count, base_radius):
+    def __init__(self, pos, direction, vertex_count, base_radius, speed):
         self.__pos = pos  # Center
         self.__direction = direction
+        self.__speed = speed
         self.__vertex_count = vertex_count
         self.__relative_vertices = [
             pygame.math.Vector2(0, 0) for i in range(vertex_count)
@@ -32,6 +33,13 @@ class Asteroid:
             y = radius * math.sin(math.radians(angles[i]))
             vert.x = x
             vert.y = y
+
+    def move(self, dt):
+        self.__pos.x += self.__direction.x * -self.__speed * dt
+        self.__pos.y += self.__direction.y * -self.__speed * dt
+        self.__absolute_vertices = [
+            v + self.__pos for v in self.__relative_vertices
+        ]
 
     def render(self, screen):
         pygame.draw.polygon(screen, 'white', self.__absolute_vertices, width=1)
