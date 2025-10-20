@@ -2,7 +2,7 @@ from ship import Ship
 import pygame
 
 
-class Main:
+class Game:
     def __init__(self, win_title, win_width, win_height, fps, screen_fill):
         pygame.init()
         self.__win_width = win_width
@@ -54,4 +54,4 @@ class Main:
 
 
 if __name__ == '__main__':
-    Main('Asteroid', 800, 600, 60, 'black')
+    Game('Asteroid', 800, 600, 60, 'black')
