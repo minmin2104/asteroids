@@ -58,10 +58,11 @@ class Ship:
             self.__corners[i].y += speed * self.direction.y
 
     def shoot(self):
+        b_width = b_height = 2
         bullet = {
             "rect": pygame.Rect(
                 self.__corners[0].x, self.__corners[0].y,
-                5, 5
+                b_width, b_height
             ),
             "direction": self.__get_direction(),
             "is_dead": False
