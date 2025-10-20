@@ -26,7 +26,7 @@ class Asteroid:
                 angles))
         angles.sort()
         for i, vert in enumerate(self.__relative_vertices):
-            radius_offset = random.uniform(-0.30, 0.30) * self.__base_radius
+            radius_offset = random.uniform(-0.15, 0.15) * self.__base_radius
             radius = self.__base_radius + radius_offset
             x = radius * math.cos(math.radians(angles[i]))
             y = radius * math.sin(math.radians(angles[i]))
