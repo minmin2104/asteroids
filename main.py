@@ -1,5 +1,6 @@
 from asteroid import Asteroid
 from ship import Ship
+import random
 import pygame
 
 
@@ -19,6 +20,21 @@ class Game:
         self.dt = 0
         self.main()
 
+    def spawn_asteroid(self):
+        pos_x = random.choice([random.randint(-10, 0), random.randint(self.__win_width, self.__win_width + 10)])
+        pos_y = random.choice([random.randint(-10, 0), random.randint(self.__win_height, self.__win_height + 10)])
+        pos = pygame.math.Vector2(pos_x, pos_y)
+        mid_screen = pygame.math.Vector2(self.__win_width / 2, self.__win_height / 2)
+        vec_to_mid = pos - mid_screen
+        x_dir_offset = y_dir_offset  = random.randint(-20, 20)
+        vec_to_mid.x += x_dir_offset
+        vec_to_mid.y += y_dir_offset
+        direction = vec_to_mid.normalize()
+        vert_count = random.randint(8, 24)
+        base_radius = random.randint(15, 60)
+        speed = random.randint(90, 400)
+        return Asteroid(pos, direction, vert_count, base_radius, speed)
+
     def main(self):
 
         ship = Ship(
@@ -27,12 +43,9 @@ class Game:
             15,
             pygame.Color(255, 255, 255))
 
-        asteroid = Asteroid(
-            pygame.math.Vector2(40, 40),
-            pygame.math.Vector2(0, 0),
-            10,
-            30
-        )
+        asteroids = []
+        last_spawn_time = 0
+        spawn_cooldown = 2  # Second
 
         last_shot_time = 0
         game_time = 0
@@ -61,7 +74,16 @@ class Game:
             ship.update(self.dt)
             ship.render(self.screen)
 
-            asteroid.render(self.screen)
+            if game_time - \
+                    last_spawn_time >= spawn_cooldown:
+                asteroid = self.spawn_asteroid()
+                asteroids.append(asteroid)
+                last_spawn_time = game_time
+
+            # Update asteroids
+            for asteroid in asteroids:
+                asteroid.move(self.dt)
+                asteroid.render(self.screen)
 
             pygame.display.flip()
 
