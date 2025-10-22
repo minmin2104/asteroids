@@ -24,6 +24,9 @@ class Game:
         pygame.mixer.init()
         pygame.mixer.music.load(self.music)
         pygame.mixer.music.play(loops=-1)
+
+        self.shot_sound_path = os.path.join("assets", "shot.mp3")
+        self.shot_sound = pygame.mixer.Sound(self.shot_sound_path)
         self.main()
 
     def spawn_asteroid(self):
@@ -107,6 +110,7 @@ class Game:
             if keys[pygame.K_x]:
                 if game_time - \
                         last_shot_time >= shooting_cooldown:
+                    self.shot_sound.play()
                     ship.shoot()
                     last_shot_time = game_time
 
