@@ -82,6 +82,7 @@ class Game:
                     asteroid['is_dead'] = True
             if ship:
                 if asteroid['asteroid'].collide_rect(ship.rect):
+                    print("YOU HIT A METEOR! LOST!")
                     pygame.mixer.music.stop()
                     ship_explode_ch = self.ship_explode_sound.play()
                     while ship_explode_ch.get_busy():
@@ -89,7 +90,6 @@ class Game:
                             if event.type == pygame.QUIT:
                                 self.ship_explode_sound.stop()
                                 self.running = False
-                    print("YOU HIT A METEOR! LOST!")
                     self.running = False
 
     def main(self):
