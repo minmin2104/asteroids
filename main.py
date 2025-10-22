@@ -37,7 +37,8 @@ class Game:
             pos_x = 10
 
         pos = pygame.math.Vector2(pos_x, pos_y)
-        mid_screen = pygame.math.Vector2(self.__win_width / 2, self.__win_height / 2)
+        mid_screen = pygame.math.Vector2(
+            self.__win_width / 2, self.__win_height / 2)
         vec_to_mid = pos - mid_screen
         x_dir_offset = random.randint(-100, 100)
         y_dir_offset = random.randint(-100, 100)
@@ -92,7 +93,9 @@ class Game:
                     last_spawn_time >= spawn_cooldown:
                 asteroid = self.spawn_asteroid()
                 age = random.randint(15, 20)
-                asteroids.append({'asteroid': asteroid, 'age': age, 'is_dead': False, 'timeout': game_time})
+                asteroids.append(
+                    {'asteroid': asteroid, 'age': age, 'is_dead': False,
+                     'timeout': game_time})
                 last_spawn_time = game_time
 
             # Update asteroids
@@ -101,7 +104,7 @@ class Game:
                 asteroid['asteroid'].render(self.screen)
                 if game_time - asteroid['timeout'] >= asteroid['age']:
                     asteroid['is_dead'] = True
-            
+
             asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
             print(len(asteroids))
 
