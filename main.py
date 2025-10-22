@@ -25,8 +25,14 @@ class Game:
         pygame.mixer.music.load(self.music)
         pygame.mixer.music.play(loops=-1)
 
-        self.shot_sound_path = os.path.join("assets", "shot.mp3")
-        self.shot_sound = pygame.mixer.Sound(self.shot_sound_path)
+        shot_sound_path = os.path.join("assets", "shot.mp3")
+        self.shot_sound = pygame.mixer.Sound(shot_sound_path)
+
+        explode_sound_path = os.path.join("assets", "explosion1.mp3")
+        self.explode_sound = pygame.mixer.Sound(explode_sound_path)
+
+        ship_explode_sound_path = os.path.join("assets", "ship_explode.mp3")
+        self.ship_explode_sound = pygame.mixer.Sound(ship_explode_sound_path)
         self.main()
 
     def spawn_asteroid(self):
@@ -70,10 +76,15 @@ class Game:
                 bullet_index = asteroid['asteroid'].collide_rects(
                     ship.bullets)
                 if bullet_index > -1:
+                    self.explode_sound.play()
                     ship.bullets_metadata[bullet_index]['is_dead'] = True
                     asteroid['is_dead'] = True
             if ship:
                 if asteroid['asteroid'].collide_rect(ship.rect):
+                    pygame.mixer.music.stop()
+                    ship_explosion_ch = self.ship_explode_sound.play()
+                    while ship_explosion_ch.get_busy():
+                        continue
                     print("YOU HIT A METEOR! LOST!")
                     self.running = False
 
