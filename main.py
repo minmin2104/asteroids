@@ -24,6 +24,7 @@ class Game:
         pygame.mixer.init()
         pygame.mixer.music.load(self.music)
         pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.set_volume(0.3)
 
         shot_sound_path = os.path.join("assets", "shot.mp3")
         self.shot_sound = pygame.mixer.Sound(shot_sound_path)
