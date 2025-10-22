@@ -35,6 +35,9 @@ class Asteroid:
             vert.x = x
             vert.y = y
 
+    def collide_rect(self, object):
+        return self.rect.colliderect(object)
+
     def collide_rects(self, objects):
         return self.rect.collidelist(objects)
 
