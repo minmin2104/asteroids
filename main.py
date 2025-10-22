@@ -2,6 +2,7 @@ from asteroid import Asteroid
 from ship import Ship
 import random
 import pygame
+import os
 
 
 class Game:
@@ -18,6 +19,11 @@ class Game:
         self.running = True
         self.fps = fps
         self.dt = 0
+
+        self.music = os.path.join("assets", "bgm.mp3")
+        pygame.mixer.init()
+        pygame.mixer.music.load(self.music)
+        pygame.mixer.music.play(loops=-1)
         self.main()
 
     def spawn_asteroid(self):
