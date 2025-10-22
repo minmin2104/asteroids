@@ -34,7 +34,8 @@ class Ship:
         self.direction = pygame.math.Vector2()
         self.__angle = 0
         self.__bullet_speed = -400
-        self.__bullets = []
+        self.bullets_metadata = []
+        self.bullets = []
 
     def rotate(self, rotation_speed):
         self.__angle += math.radians(rotation_speed)
@@ -67,22 +68,25 @@ class Ship:
             "direction": self.__get_direction(),
             "is_dead": False
         }
-        self.__bullets.append(bullet)
+        self.bullets_metadata.append(bullet)
 
     def update(self, dt):
-        for bullet in self.__bullets:
+        for bullet in self.bullets_metadata:
             bullet_dir = bullet["direction"]
             bullet["rect"].x += (self.__bullet_speed *
                                  dt) * bullet_dir.x
             bullet["rect"].y += (self.__bullet_speed *
                                  dt) * bullet_dir.y
 
-        self.__bullets[:] = [b for b in self.__bullets if not b["is_dead"]]
+        self.bullets_metadata[:] = [
+            b for b in self.bullets_metadata if not b["is_dead"]]
+
+        self.bullets = [b['rect'] for b in self.bullets_metadata]
 
     def render(self, screen):
         self.rect = pygame.draw.polygon(
             screen, self.color, self.__corners, self.width)
-        for bullet in self.__bullets:
+        for bullet in self.bullets_metadata:
             bullet_rect = bullet["rect"]
             pygame.draw.rect(screen, 'white', bullet_rect)
             if (bullet_rect.x >= screen.get_width()

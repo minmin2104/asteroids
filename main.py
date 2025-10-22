@@ -104,9 +104,15 @@ class Game:
                 asteroid['asteroid'].render(self.screen)
                 if game_time - asteroid['timeout'] >= asteroid['age']:
                     asteroid['is_dead'] = True
+                # Handle asteroid collision
+                if ship.bullets:
+                    bullet_index = asteroid['asteroid'].collide_rects(
+                        ship.bullets)
+                    if bullet_index > -1:
+                        ship.bullets_metadata[bullet_index]['is_dead'] = True
+                        asteroid['is_dead'] = True
 
             asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
-            print(len(asteroids))
 
             pygame.display.flip()
 
