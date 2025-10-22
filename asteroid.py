@@ -17,6 +17,7 @@ class Asteroid:
         self.__absolute_vertices = [
             v + self.__pos for v in self.__relative_vertices
         ]
+        self.rect = None
 
     def __create(self):
         angle_inc = 360 // self.__vertex_count
@@ -34,6 +35,9 @@ class Asteroid:
             vert.x = x
             vert.y = y
 
+    def collide_rects(self, objects):
+        return self.rect.collidelist(objects)
+
     def move(self, dt):
         self.__pos.x += self.__direction.x * -self.__speed * dt
         self.__pos.y += self.__direction.y * -self.__speed * dt
@@ -42,4 +46,5 @@ class Asteroid:
         ]
 
     def render(self, screen):
-        pygame.draw.polygon(screen, 'white', self.__absolute_vertices, width=1)
+        self.rect = pygame.draw.polygon(
+            screen, 'white', self.__absolute_vertices, width=1)
