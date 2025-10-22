@@ -56,6 +56,24 @@ class Game:
         speed = random.randint(90, 300)
         return Asteroid(pos, direction, vert_count, base_radius, speed)
 
+    def update_asteroid(self, asteroids, ship, game_time):
+        for asteroid in asteroids:
+            asteroid['asteroid'].move(self.dt)
+            asteroid['asteroid'].render(self.screen)
+            if game_time - asteroid['timeout'] >= asteroid['age']:
+                asteroid['is_dead'] = True
+            # Handle asteroid collision
+            if ship.bullets:
+                bullet_index = asteroid['asteroid'].collide_rects(
+                    ship.bullets)
+                if bullet_index > -1:
+                    ship.bullets_metadata[bullet_index]['is_dead'] = True
+                    asteroid['is_dead'] = True
+            if ship:
+                if asteroid['asteroid'].collide_rect(ship.rect):
+                    print("YOU HIT A METEOR! LOST!")
+                    self.running = False
+
     def main(self):
 
         ship = Ship(
@@ -105,22 +123,7 @@ class Game:
                 last_spawn_time = game_time
 
             # Update asteroids
-            for asteroid in asteroids:
-                asteroid['asteroid'].move(self.dt)
-                asteroid['asteroid'].render(self.screen)
-                if game_time - asteroid['timeout'] >= asteroid['age']:
-                    asteroid['is_dead'] = True
-                # Handle asteroid collision
-                if ship.bullets:
-                    bullet_index = asteroid['asteroid'].collide_rects(
-                        ship.bullets)
-                    if bullet_index > -1:
-                        ship.bullets_metadata[bullet_index]['is_dead'] = True
-                        asteroid['is_dead'] = True
-                if ship:
-                    if asteroid['asteroid'].collide_rect(ship.rect):
-                        print("YOU HIT A METEOR! LOST!")
-                        self.running = False
+            self.update_asteroid(asteroids, ship, game_time)
 
             asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
 
