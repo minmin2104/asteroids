@@ -111,6 +111,10 @@ class Game:
                     if bullet_index > -1:
                         ship.bullets_metadata[bullet_index]['is_dead'] = True
                         asteroid['is_dead'] = True
+                if ship:
+                    if asteroid['asteroid'].collide_rect(ship.rect):
+                        print("YOU HIT A METEOR! LOST!")
+                        self.running = False
 
             asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
 
