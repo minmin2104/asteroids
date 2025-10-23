@@ -39,6 +39,9 @@ class Game:
         retro_font = os.path.join("assets", "retro_gaming.ttf")
         self.score_text = pygame.font.Font(retro_font)
         self.score = 0
+
+        self.game_state = "playing"
+        self.game_over_text = pygame.font.Font(retro_font, size=72)
         self.main()
 
     def spawn_asteroid(self):
@@ -71,6 +74,24 @@ class Game:
         speed = random.randint(90, 300)
         return Asteroid(pos, direction, vert_count, base_radius, speed)
 
+    def game_over(self):
+        while self.game_state == "game_over":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.game_state = "game_quit"
+                    self.running = False
+
+            game_over_surface = self.game_over_text.render(
+                "GAME OVER", True, pygame.Color(255, 255, 255))
+            self.screen.blit(
+                game_over_surface,
+                (self.screen.get_width() / 2 -
+                    game_over_surface.get_width() / 2,
+                 self.screen.get_height() / 2 -
+                 game_over_surface.get_height() / 2))
+
+            pygame.display.flip()
+
     def update_asteroid(self, asteroids, ship, game_time):
         for asteroid in asteroids:
             asteroid['asteroid'].move(self.dt)
@@ -90,13 +111,9 @@ class Game:
                 if asteroid['asteroid'].collide_rect(ship.rect):
                     print("YOU HIT A METEOR! LOST!")
                     pygame.mixer.music.stop()
-                    ship_explode_ch = self.ship_explode_sound.play()
-                    while ship_explode_ch.get_busy():
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                self.ship_explode_sound.stop()
-                                self.running = False
-                    self.running = False
+                    self.ship_explode_sound.play()
+                    self.game_state = "game_over"
+                    self.game_over()
 
     def main(self):
 
