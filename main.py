@@ -3,6 +3,7 @@ from ship import Ship
 import random
 import pygame
 import os
+import sys
 
 
 class Game:
@@ -21,6 +22,14 @@ class Game:
         self.dt = 0
 
         self.main()
+
+    def resource_helper(self, path):
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, path)
 
     def spawn_asteroid(self):
         edge = random.choice(['top', 'bottom', 'left', 'right'])
@@ -107,23 +116,27 @@ class Game:
                     self.game_state = "game_over"
 
     def init(self):
-        self.music = os.path.join("assets", "bgm.mp3")
+        self.music = self.resource_helper(os.path.join("assets", "bgm.mp3"))
         pygame.mixer.init()
         pygame.mixer.music.load(self.music)
         pygame.mixer.music.play(loops=-1)
         pygame.mixer.music.set_volume(0.3)
 
-        shot_sound_path = os.path.join("assets", "shot.mp3")
+        shot_sound_path = self.resource_helper(
+            os.path.join("assets", "shot.mp3"))
         self.shot_sound = pygame.mixer.Sound(shot_sound_path)
 
-        explode_sound_path = os.path.join("assets", "explosion1.mp3")
+        explode_sound_path = self.resource_helper(
+            os.path.join("assets", "explosion1.mp3"))
         self.explode_sound = pygame.mixer.Sound(explode_sound_path)
 
-        ship_explode_sound_path = os.path.join("assets", "ship_explode.mp3")
+        ship_explode_sound_path = self.resource_helper(
+            os.path.join("assets", "ship_explode.mp3"))
         self.ship_explode_sound = pygame.mixer.Sound(ship_explode_sound_path)
 
         pygame.font.init()
-        retro_font = os.path.join("assets", "retro_gaming.ttf")
+        retro_font = self.resource_helper(
+            os.path.join("assets", "retro_gaming.ttf"))
         self.score_text = pygame.font.Font(retro_font)
         self.score = 0
 
