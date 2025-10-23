@@ -34,6 +34,11 @@ class Game:
 
         ship_explode_sound_path = os.path.join("assets", "ship_explode.mp3")
         self.ship_explode_sound = pygame.mixer.Sound(ship_explode_sound_path)
+
+        pygame.font.init()
+        retro_font = os.path.join("assets", "retro_gaming.ttf")
+        self.score_text = pygame.font.Font(retro_font)
+        self.score = 0
         self.main()
 
     def spawn_asteroid(self):
@@ -79,6 +84,7 @@ class Game:
                 if bullet_index > -1:
                     self.explode_sound.play()
                     ship.bullets_metadata[bullet_index]['is_dead'] = True
+                    self.score += 1
                     asteroid['is_dead'] = True
             if ship:
                 if asteroid['asteroid'].collide_rect(ship.rect):
@@ -145,6 +151,13 @@ class Game:
             self.update_asteroid(asteroids, ship, game_time)
 
             asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
+
+            score_text_surface = self.score_text.render(
+                f"Score: {self.score:0>4}", True, pygame.Color(255, 255, 255))
+
+            self.screen.blit(
+                score_text_surface, (self.screen.get_width() -
+                                     score_text_surface.get_width() - 5, 5))
 
             pygame.display.flip()
 
