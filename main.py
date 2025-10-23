@@ -42,6 +42,8 @@ class Game:
 
         self.game_state = "playing"
         self.game_over_text = pygame.font.Font(retro_font, size=72)
+        self.restart_text = pygame.font.Font(retro_font, size=32)
+
         self.main()
 
     def spawn_asteroid(self):
@@ -83,12 +85,21 @@ class Game:
 
             game_over_surface = self.game_over_text.render(
                 "GAME OVER", True, pygame.Color(255, 255, 255))
-            self.screen.blit(
+            game_over_rect = self.screen.blit(
                 game_over_surface,
                 (self.screen.get_width() / 2 -
                     game_over_surface.get_width() / 2,
                  self.screen.get_height() / 2 -
                  game_over_surface.get_height() / 2))
+
+            restart_surface = self.restart_text.render(
+                "Click anywhere to restart",
+                True,
+                pygame.Color(255, 255, 155)
+            )
+            self.screen.blit(restart_surface, (
+                game_over_rect.x - restart_surface.get_height() / 2,
+                game_over_rect.y + game_over_rect.height + 10))
 
             pygame.display.flip()
 
