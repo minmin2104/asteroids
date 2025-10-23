@@ -60,7 +60,8 @@ class Game:
                     self.running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        self.game_state = "playing"
+                        self.game_state = "restart"
+                        self.ship_explode_sound.stop()
                         self.init()
 
             game_over_surface = self.game_over_text.render(
@@ -195,6 +196,9 @@ class Game:
                                      score_text_surface.get_width() - 5, 5))
 
             self.game_over()
+            if self.game_state == "restart":
+                self.game_state = "playing"
+                continue
 
             pygame.display.flip()
 
