@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
@@ -28,13 +29,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
 
-      - name: Build executable
-        run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-          pyinstaller --onedir --windowed --add-data "assets;assets" main.py -n asteroid
-          else
-          pyinstaller --onedir --windowed --add-data "assets:assets" main.py -n asteroid
-          fi
+      - name: Build executable (Windows)
+        if: runner.os == 'Windows'
+        run: pyinstaller --onedir --clean --windowed --add-data "assets;assets" main.py -n asteroid
+
+      - name: Build executable (macOS/Linux)
+        if: runner.os != 'Windows'
+        run: pyinstaller --onedir --clean --windowed --add-data "assets:assets" main.py -n asteroid
 
       - name: Package build
         run: |
