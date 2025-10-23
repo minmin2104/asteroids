@@ -7,6 +7,11 @@ https://github.com/user-attachments/assets/950eda5f-de4b-4295-b012-a65f402fd500
 
 
 > [!IMPORTANT]
+> Use arrow keys to move around.
+> `x` keys to shoot
+
+
+> [!IMPORTANT]
 > As of right now this project is playable but there are more things I wanted to add
 > The game is not fun as of right now but functional
 
