@@ -37,7 +37,14 @@ jobs:
         if: runner.os != 'Windows'
         run: pyinstaller --onedir --clean --windowed --add-data "assets:assets" main.py -n asteroid
 
-      - name: Package build
+      - name: Package build (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd dist
+          Compress-Archive -Path asteroid -DestinationPath asteroid-${{ matrix.os }}.zip
+
+      - name: Package build (macOS/Linux)
+        if: runner.os != 'Windows'
         run: |
           cd dist
           zip -r asteroid-${{ matrix.os }}.zip asteroid
