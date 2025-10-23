@@ -113,7 +113,6 @@ class Game:
                     pygame.mixer.music.stop()
                     self.ship_explode_sound.play()
                     self.game_state = "game_over"
-                    self.game_over()
 
     def main(self):
 
@@ -175,6 +174,8 @@ class Game:
             self.screen.blit(
                 score_text_surface, (self.screen.get_width() -
                                      score_text_surface.get_width() - 5, 5))
+
+            self.game_over()
 
             pygame.display.flip()
 
