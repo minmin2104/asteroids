@@ -20,30 +20,6 @@ class Game:
         self.fps = fps
         self.dt = 0
 
-        self.music = os.path.join("assets", "bgm.mp3")
-        pygame.mixer.init()
-        pygame.mixer.music.load(self.music)
-        pygame.mixer.music.play(loops=-1)
-        pygame.mixer.music.set_volume(0.3)
-
-        shot_sound_path = os.path.join("assets", "shot.mp3")
-        self.shot_sound = pygame.mixer.Sound(shot_sound_path)
-
-        explode_sound_path = os.path.join("assets", "explosion1.mp3")
-        self.explode_sound = pygame.mixer.Sound(explode_sound_path)
-
-        ship_explode_sound_path = os.path.join("assets", "ship_explode.mp3")
-        self.ship_explode_sound = pygame.mixer.Sound(ship_explode_sound_path)
-
-        pygame.font.init()
-        retro_font = os.path.join("assets", "retro_gaming.ttf")
-        self.score_text = pygame.font.Font(retro_font)
-        self.score = 0
-
-        self.game_state = "playing"
-        self.game_over_text = pygame.font.Font(retro_font, size=72)
-        self.restart_text = pygame.font.Font(retro_font, size=32)
-
         self.main()
 
     def spawn_asteroid(self):
@@ -82,6 +58,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.game_state = "game_quit"
                     self.running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.game_state = "playing"
+                        self.init()
 
             game_over_surface = self.game_over_text.render(
                 "GAME OVER", True, pygame.Color(255, 255, 255))
@@ -125,21 +105,48 @@ class Game:
                     self.ship_explode_sound.play()
                     self.game_state = "game_over"
 
-    def main(self):
+    def init(self):
+        self.music = os.path.join("assets", "bgm.mp3")
+        pygame.mixer.init()
+        pygame.mixer.music.load(self.music)
+        pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.set_volume(0.3)
 
-        ship = Ship(
+        shot_sound_path = os.path.join("assets", "shot.mp3")
+        self.shot_sound = pygame.mixer.Sound(shot_sound_path)
+
+        explode_sound_path = os.path.join("assets", "explosion1.mp3")
+        self.explode_sound = pygame.mixer.Sound(explode_sound_path)
+
+        ship_explode_sound_path = os.path.join("assets", "ship_explode.mp3")
+        self.ship_explode_sound = pygame.mixer.Sound(ship_explode_sound_path)
+
+        pygame.font.init()
+        retro_font = os.path.join("assets", "retro_gaming.ttf")
+        self.score_text = pygame.font.Font(retro_font)
+        self.score = 0
+
+        self.game_state = "playing"
+        self.game_over_text = pygame.font.Font(retro_font, size=72)
+        self.restart_text = pygame.font.Font(retro_font, size=32)
+
+        self.ship = Ship(
             pygame.math.Vector2(self.screen.get_width() / 2,
                                 self.screen.get_height() / 2),
             15,
             pygame.Color(255, 255, 255))
 
-        asteroids = []
-        last_spawn_time = 0
-        spawn_cooldown = 2  # Second
+        self.asteroids = []
+        self.last_spawn_time = 0
+        self.spawn_cooldown = 2  # Second
 
-        last_shot_time = 0
-        game_time = 0
-        shooting_cooldown = 0.5  # Second
+        self.last_shot_time = 0
+        self.game_time = 0
+        self.shooting_cooldown = 0.5  # Second
+
+    def main(self):
+
+        self.init()
 
         while self.running:
             for event in pygame.event.get():
@@ -150,34 +157,35 @@ class Game:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                ship.move(200 * self.dt)
+                self.ship.move(200 * self.dt)
             if keys[pygame.K_LEFT]:
-                ship.rotate(-200 * self.dt)
+                self.ship.rotate(-200 * self.dt)
             if keys[pygame.K_RIGHT]:
-                ship.rotate(200 * self.dt)
+                self.ship.rotate(200 * self.dt)
             if keys[pygame.K_x]:
-                if game_time - \
-                        last_shot_time >= shooting_cooldown:
+                if self.game_time - \
+                        self.last_shot_time >= self.shooting_cooldown:
                     self.shot_sound.play()
-                    ship.shoot()
-                    last_shot_time = game_time
+                    self.ship.shoot()
+                    self.last_shot_time = self.game_time
 
-            ship.update(self.dt)
-            ship.render(self.screen)
+            self.ship.update(self.dt)
+            self.ship.render(self.screen)
 
-            if game_time - \
-                    last_spawn_time >= spawn_cooldown:
+            if self.game_time - \
+                    self.last_spawn_time >= self.spawn_cooldown:
                 asteroid = self.spawn_asteroid()
                 age = random.randint(15, 20)
-                asteroids.append(
+                self.asteroids.append(
                     {'asteroid': asteroid, 'age': age, 'is_dead': False,
-                     'timeout': game_time})
-                last_spawn_time = game_time
+                     'timeout': self.game_time})
+                self.last_spawn_time = self.game_time
 
-            # Update asteroids
-            self.update_asteroid(asteroids, ship, game_time)
+            # Update self.asteroids
+            self.update_asteroid(self.asteroids, self.ship, self.game_time)
 
-            asteroids[:] = [ast for ast in asteroids if not ast['is_dead']]
+            self.asteroids[:] = [
+                ast for ast in self.asteroids if not ast['is_dead']]
 
             score_text_surface = self.score_text.render(
                 f"Score: {self.score:0>4}", True, pygame.Color(255, 255, 255))
@@ -191,7 +199,7 @@ class Game:
             pygame.display.flip()
 
             self.dt = self.clock.tick(self.fps) / 1000
-            game_time += self.dt
+            self.game_time += self.dt
 
         pygame.quit()
 
